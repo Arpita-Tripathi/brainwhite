@@ -1,0 +1,49 @@
+# Replace the placeholders with real GitHub usernames before committing.
+#   @LEAD = team lead   @P1 Product/Frontend   @P2 Backend/Platform
+#   @P3 AI/Code Intelligence   @P4 Infra/QA/Security
+# The last matching pattern wins, so keep specific paths below general ones.
+# The branch rule "Require review from Code Owners" must be on for main and develop.
+# Folder names must match what the team really creates (see docs/SETUP.md section 6.4).
+
+# Default: anyone from the team can review unlisted paths
+*                                   @LEAD @P1 @P2 @P3 @P4
+
+# P1: Product / Frontend
+/apps/web/                          @P1
+/packages/ui/                       @P1
+
+# P2: Backend / Platform
+/apps/api/                          @P2
+/apps/worker/                       @P2
+/backend/core/                      @P2 @P4
+/backend/modules/auth/              @P2 @P4
+/backend/modules/organizations/     @P2 @P4
+/backend/modules/projects/          @P2
+/backend/modules/repositories/      @P2
+/backend/modules/ingestion/         @P2 @P3
+/backend/modules/jobs/              @P2
+/backend/modules/developers/        @P2
+/backend/modules/analytics/         @P2
+/migrations/                        @P2 @P4
+
+# P3: AI / Code Intelligence
+/backend/ai/                        @P3
+/backend/modules/code_intelligence/ @P3
+/backend/modules/knowledge/         @P3
+/backend/modules/chat/              @P3 @P2
+/backend/modules/learning/          @P3 @P2
+/backend/modules/assessments/       @P3 @P2
+/backend/modules/readiness/         @P3 @P2
+/parsers/                           @P3
+/evals/                             @P3 @P4
+
+# P4: Infra / QA / Security
+/infra/                             @P4 @LEAD
+/tests/security/                    @P4
+/.github/                           @P4 @LEAD
+
+# Shared contracts and team files: any one of these owners can approve
+/packages/api-contracts/            @LEAD @P1 @P2 @P3 @P4
+/CLAUDE.md                          @LEAD @P1 @P2 @P3 @P4
+/.claude/                           @LEAD @P1 @P2 @P3 @P4
+/docs/                              @LEAD @P1 @P2 @P3 @P4

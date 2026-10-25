@@ -1,0 +1,60 @@
+# SKELETON. Not run yet. Hosting is not chosen (ENGINEERING.md, open decision 9).
+# develop -> staging (automatic). main -> production (manual approval on the environment).
+# Deploy steps are placeholders and fail on purpose until a real deploy step replaces them.
+name: CD
+
+on:
+  push:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('backend/Dockerfile') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}-backend:${{ github.sha }}
+      # Add the same step for the web image when its Dockerfile exists.
+
+  deploy-staging:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: |
+          echo "TODO: deploy image ${{ github.sha }} to staging"
+          echo "TODO: run database migrations before starting the new version"
+          echo "TODO: smoke test GET /health"
+          exit 1
+
+  deploy-production:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    environment: production   # add required reviewers on this environment
+    steps:
+      - name: Deploy to production
+        run: |
+          echo "TODO: deploy the image that passed staging to production"
+          echo "TODO: back up the database, run migrations, smoke test"
+          exit 1

@@ -1,0 +1,39 @@
+# Secrets and env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+
+# Local data (never commit analyzed repos or artifacts)
+.data/
+.ephemeral/
+minio-data/
+pgdata/
+*.sqlite
+
+# Claude Code personal files (shared .claude/settings.json IS committed)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
